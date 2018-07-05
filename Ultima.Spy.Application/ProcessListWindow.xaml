@@ -85,8 +85,26 @@
 		</Border>
 
 		<Border Grid.Row="1" Style="{StaticResource ProcessContent}">
-			<ListBox x:Name="List" SelectionChanged="ProcessList_SelectionChanged" Style="{StaticResource ProcessList}" />
-		</Border>
+            <ListBox x:Name="List" SelectionChanged="ProcessList_SelectionChanged" Style="{StaticResource ProcessList}" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="300">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" >
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="ProcessName" />
+                                        <Binding Path="MainWindowTitle" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
 
 		<Border Grid.Row="2" Style="{StaticResource ProcessFooter}">
 			<Grid>

@@ -202,8 +202,14 @@ namespace Ultima.Spy.Packets
 				return new GumpTooltip( commands, parent );
 				case "mastergump":
 				return null;
+                case "itemproperty":
+                return new GumpItemProperty(commands, parent);
+                case "echandleinput":
+                return new ECHandleInput(commands, parent);
+                case "textentrylimited":
+                return new GumpTextEntryLimited(commands, parent);
 
-				default:
+                default:
 				throw new ArgumentException();
 			}
 		}
@@ -1103,4 +1109,93 @@ namespace Ultima.Spy.Packets
 			return string.Format( "Tooltip: Number: \"{0}\"", _Number );
 		}
 	}
+
+    public class GumpItemProperty : GumpEntry
+    {
+        private uint _Serial;
+
+        public uint Serial { get { return _Serial; } }
+
+        public GumpItemProperty(string[] commands, GenericGumpPacket parent)
+            : base(commands, parent)
+        {
+            _Serial = GetUInt32(1);
+        }
+
+        public override string GetRunUOLine()
+        {
+            return string.Format("AddItemProperty( 0x{0:X} );",
+                _Serial);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("itemproperty: \"Serial: \"0x{0:X}\"",
+                _Serial);
+        }
+    }
+
+    public class ECHandleInput : GumpEntry
+    {
+        public ECHandleInput(string[] commands, GenericGumpPacket parent)
+            : base(commands, parent)
+        {
+        }
+
+        public override string GetRunUOLine()
+        {
+            return string.Format("AddECHandleInput();");
+        }
+
+        public override string ToString()
+        {
+            return string.Format("ECHandleInput");
+        }
+    }
+
+    public class GumpTextEntryLimited : GumpEntry
+    {
+        private int _X;
+        private int _Y;
+        private int _Width;
+        private int _Height;
+        private int _Color;
+        private int _EntryId;
+        private string _InitialText;
+        private int _Textlen;
+
+        public int X { get { return _X; } }
+        public int Y { get { return _X; } }
+        public int Width { get { return _Width; } }
+        public int Height { get { return _Height; } }
+        public int Color { get { return _Color; } }
+        public int EntryId { get { return _EntryId; } }
+        public string InitialText { get { return _InitialText; } }
+        public int Textlen { get { return _Textlen; } }
+
+        public GumpTextEntryLimited(string[] commands, GenericGumpPacket parent)
+            : base(commands, parent)
+        {
+            _X = GetInt32(1);
+            _Y = GetInt32(2);
+            _Width = GetInt32(3);
+            _Height = GetInt32(4);
+            _Color = GetInt32(5);
+            _EntryId = GetInt32(6);
+            _InitialText = GetText(GetInt32(7));
+            _Textlen = GetInt32(1);
+        }
+
+        public override string GetRunUOLine()
+        {
+            return string.Format("AddTextEntry( {0}, {1}, {2}, {3}, 0x{4:X}, {5}, {6}, \"{7}\" );",
+                _X, _Y, _Width, _Height, _Color, _EntryId, _Textlen, Format(_InitialText));
+        }
+
+        public override string ToString()
+        {
+            return string.Format("TextEntryLimited: X: \"{0}\", Y: \"{1}\", Width: \"{2}\", Height: \"{3}\", Color: \"0x{4:X}\", EntryId: \"{5}\", Textlen: \"{6}\", Text: \"{7}\"",
+                _X, _Y, _Width, _Height, _Color, _EntryId, _Textlen, _InitialText);
+        }
+    }
 }

@@ -23,7 +23,14 @@ namespace Ultima.Spy.Packets
 			byte[] compressedEntries = reader.ReadBytes( compressedEntriesLength );
 			byte[] decompressedEntries = new byte[ decompressedEntriesLength ];
 
-			Ultima.Package.Zlib.Decompress( decompressedEntries, ref decompressedEntriesLength, compressedEntries, compressedEntriesLength );
+            if (SystemInfo.IsX64)
+            {
+                Ultima.Package.Zlib64.Decompress(decompressedEntries, ref decompressedEntriesLength, compressedEntries, compressedEntriesLength);
+            }
+            else
+            {
+                Ultima.Package.Zlib32.Decompress(decompressedEntries, ref decompressedEntriesLength, compressedEntries, compressedEntriesLength);
+            }
 			string entries = Encoding.ASCII.GetString( decompressedEntries );
 
 			int lineCount = reader.ReadInt32();
@@ -33,7 +40,14 @@ namespace Ultima.Spy.Packets
 			byte[] compressedStrings = reader.ReadBytes( compressedStringsLength );
 			byte[] decompressedStrings = new byte[ decompressedStringsLength ];
 
-			Ultima.Package.Zlib.Decompress( decompressedStrings, ref decompressedStringsLength, compressedStrings, compressedStringsLength );
+            if (SystemInfo.IsX64)
+            {
+                Ultima.Package.Zlib64.Decompress(decompressedStrings, ref decompressedStringsLength, compressedStrings, compressedStringsLength);
+            }
+            else
+            {
+                Ultima.Package.Zlib32.Decompress(decompressedStrings, ref decompressedStringsLength, compressedStrings, compressedStringsLength);
+            }            
 			string strings = Encoding.ASCII.GetString( decompressedStrings );
 			
 			_Text = new List<string>();
