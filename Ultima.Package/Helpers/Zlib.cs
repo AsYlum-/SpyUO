@@ -22,10 +22,10 @@ namespace Ultima.Package
     /// <summary>
     /// Compression library.
     /// </summary>
-    public class Zlib
+    public class Zlib64
     {
         #region Methods
-        [DllImport("zlibwapi", EntryPoint = "zlibVersion")]
+        [DllImport("zlibwapi64")]
         private static extern string zlibVersion();
 
         /// <summary>
@@ -39,7 +39,42 @@ namespace Ultima.Package
             }
         }
 
-        [DllImport("zlibwapi", EntryPoint = "uncompress")]
+        [DllImport("zlibwapi64")]
+        private static extern ZLibError uncompress(byte[] dest, ref int destLen, byte[] source, int sourceLen);
+
+        /// <summary>
+        /// Decompresses array of bytes.
+        /// </summary>
+        /// <param name="dest">Destination byte array.</param>
+        /// <param name="destLength">Destination length (Sets it).</param>
+        /// <param name="source">Source byte array.</param>
+        /// <param name="sourceLength">Source length.</param>
+        /// <returns>Error code.</returns>
+        public static ZLibError Decompress(byte[] dest, ref int destLength, byte[] source, int sourceLength)
+        {
+            return uncompress(dest, ref destLength, source, sourceLength);
+        }
+        #endregion
+    }
+
+    public class Zlib32
+    {
+        #region Methods
+        [DllImport("zlibwapi32")]
+        private static extern string zlibVersion();
+
+        /// <summary>
+        /// Version of the library.
+        /// </summary>
+        public static string Version
+        {
+            get
+            {
+                return zlibVersion();
+            }
+        }
+
+        [DllImport("zlibwapi32")]
         private static extern ZLibError uncompress(byte[] dest, ref int destLen, byte[] source, int sourceLen);
 
         /// <summary>

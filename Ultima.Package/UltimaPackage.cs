@@ -144,7 +144,12 @@ namespace Ultima.Package
                 int decompressedSize = file.DecompressedSize;
                 byte[] decompressed = new byte[decompressedSize];
 
-                ZLibError error = Zlib.Decompress(decompressed, ref decompressedSize, compressed, compressed.Length);
+                ZLibError error;
+
+                if (SystemInfo.IsX64)
+                    error = Zlib64.Decompress(decompressed, ref decompressedSize, compressed, compressed.Length);
+                else
+                    error = Zlib32.Decompress(decompressed, ref decompressedSize, compressed, compressed.Length);
 
                 if (decompressedSize != file.DecompressedSize)
                     throw new PackageException("Error decompressing vile. Decompressed length missmatch. Defined={0} Actual={1}", file.DecompressedSize, decompressedSize);

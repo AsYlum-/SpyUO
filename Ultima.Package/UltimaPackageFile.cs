@@ -2,112 +2,81 @@
 
 namespace Ultima.Package
 {
-	public enum FileCompression
-	{
-		/// <summary>
-		/// No compression
-		/// </summary>
-		None,
+    public enum FileCompression
+    {
+        /// <summary>
+        /// No compression
+        /// </summary>
+        None,
 
-		/// <summary>
-		/// ZLIB compression.
-		/// </summary>
-		Zlib,
-	}
+        /// <summary>
+        /// ZLIB compression.
+        /// </summary>
+        Zlib,
+    }
 
-	public class UltimaPackageFile
-	{
-		#region Properties
-		/// <summary>
-		/// File header size.
-		/// </summary>
-		public const int FileHeaderSize = 34;
+    public class UltimaPackageFile
+    {
+        #region Properties
+        /// <summary>
+        /// File header size.
+        /// </summary>
+        public const int FileHeaderSize = 34;
 
+        /// <summary>
+        /// Gets package that owns this file.
+        /// </summary>
+        public UltimaPackage Package { get; set; }
 
-		private UltimaPackage _Package;
+        /// <summary>
+        /// Gets or sets file address.
+        /// </summary>
+        public long FileAddress { get; set; }
 
-		/// <summary>
-		/// Gets package that owns this file.
-		/// </summary>
-		public UltimaPackage Package
-		{
-			get { return _Package; }
-		}
+        /// <summary>
+        /// Gets or sets compression type.
+        /// </summary>
+        public FileCompression Compression { get; set; }
 
-		private long _FileAddress;
+        /// <summary>
+        /// Gets compressed size.
+        /// </summary>
+        public int CompressedSize { get; set; }
 
-		/// <summary>
-		/// Gets or sets file address.
-		/// </summary>
-		public long FileAddress
-		{
-			get { return _FileAddress; }
-		}
+        /// <summary>
+        /// Gets decompressed size.
+        /// </summary>
+        public int DecompressedSize { get; set; }
 
-		private FileCompression _Compression;
+        /// <summary>
+        /// Gets file name hash.
+        /// </summary>
+        public ulong FileNameHash { get; set; }
+        #endregion
 
-		/// <summary>
-		/// Gets or sets compression type.
-		/// </summary>
-		public FileCompression Compression
-		{
-			get { return _Compression; }
-		}
+        #region Constructors
+        /// <summary>
+        /// Constructs a new instance of UltimaPackageFile.
+        /// </summary>
+        /// <param name="package">Pacakge that contains this file.</param>
+        /// <param name="reader">Reader to read from.</param>
+        public UltimaPackageFile(UltimaPackage package, BinaryReader reader)
+        {
+            Package = package;
+            FileAddress = reader.ReadInt64();
+            FileAddress += reader.ReadInt32();
+            CompressedSize = reader.ReadInt32();
+            DecompressedSize = reader.ReadInt32();
+            FileNameHash = reader.ReadUInt64();
 
-		private int _CompressedSize;
+            reader.ReadInt32(); // Header hash
 
-		/// <summary>
-		/// Gets compressed size.
-		/// </summary>
-		public int CompressedSize
-		{
-			get { return _CompressedSize; }
-		}
-
-		private int _DecompressedSize;
-
-		/// <summary>
-		/// Gets decompressed size.
-		/// </summary>
-		public int DecompressedSize
-		{
-			get { return _DecompressedSize; }
-		}
-
-		private ulong _FileNameHash;
-
-		/// <summary>
-		/// Gets file name hash.
-		/// </summary>
-		public ulong FileNameHash
-		{
-			get { return _FileNameHash; }
-		}
-		#endregion
-
-		#region Constructors
-		/// <summary>
-		/// Constructs a new instance of UltimaPackageFile.
-		/// </summary>
-		/// <param name="package">Pacakge that contains this file.</param>
-		/// <param name="reader">Reader to read from.</param>
-		public UltimaPackageFile( UltimaPackage package, BinaryReader reader )
-		{
-			_Package = package;
-			_FileAddress = reader.ReadInt64();
-			_FileAddress += reader.ReadInt32();
-			_CompressedSize = reader.ReadInt32();
-			_DecompressedSize = reader.ReadInt32();
-			_FileNameHash = reader.ReadUInt64();
-
-			reader.ReadInt32(); // Header hash
-
-			switch ( reader.ReadInt16() )
-			{
-				case 0: _Compression = FileCompression.None; break;
-				case 1: _Compression = FileCompression.Zlib; break;
-			}
-		}
-		#endregion
-	}
+            switch (reader.ReadInt16())
+            {
+                case 0: Compression = FileCompression.None; break;
+                case 1: Compression = FileCompression.Zlib; break;
+            }
+        }
+        #endregion
+    }
 }
