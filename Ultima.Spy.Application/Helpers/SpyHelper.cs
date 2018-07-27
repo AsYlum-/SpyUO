@@ -327,6 +327,12 @@ namespace Ultima.Spy.Application
             Packets.Clear();
         }
 
+        public void RemovePacket(UltimaPacket packet)
+        {
+            Count--;
+            Packets.Remove(packet);
+        }
+
         /// <summary>
         /// Saves to binary file.
         /// </summary>

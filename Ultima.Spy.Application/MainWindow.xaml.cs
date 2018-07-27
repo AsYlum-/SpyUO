@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Microsoft.Win32;
 using Ultima.Package;
@@ -59,6 +62,19 @@ namespace Ultima.Spy.Application
             InitializeComponent();
         }
         #endregion
+
+        private void dataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Delete)
+            {
+                var packet = PacketsView.SelectedValue as UltimaPacket;
+
+                if (packet != null)
+                {
+                    SpyHelper.RemovePacket(packet);
+                }
+            }
+        }
 
         #region Methods
         #region Notifications
