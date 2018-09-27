@@ -67,6 +67,7 @@
     <Compile Include="Packets\GraphicalEffect.cs" />
     <Compile Include="Packets\GumpResponse.cs" />
     <Compile Include="Packets\MobileAnimation.cs" />
+    <Compile Include="Packets\GlobalChat.cs" />
     <Compile Include="Packets\MobileName.cs" />
     <Compile Include="Packets\MobileUpdate.cs" />
     <Compile Include="Packets\QueryPropertiesRequest.cs" />
