@@ -62,6 +62,8 @@
     <Compile Include="Packets\ContainerContent.cs" />
     <Compile Include="Packets\AsciiMessage.cs" />
     <Compile Include="Packets\Buffs.cs" />
+    <Compile Include="Packets\ParticleEffect.cs" />
+    <Compile Include="Packets\HuedEffect.cs" />
     <Compile Include="Packets\GraphicalEffect.cs" />
     <Compile Include="Packets\GumpResponse.cs" />
     <Compile Include="Packets\MobileAnimation.cs" />
