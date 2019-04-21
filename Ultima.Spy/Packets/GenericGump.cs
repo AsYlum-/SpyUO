@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Ultima.Spy.Packets
 {
@@ -81,7 +82,7 @@ namespace Ultima.Spy.Packets
             {
                 char ch = s[i];
 
-                if (ch == ' ' || ch == '\t')
+                if (ch == ' ' || ch == '\t' || ch == ',')
                 {
                     if (!stringCmd)
                     {
@@ -104,6 +105,11 @@ namespace Ultima.Spy.Packets
             if (!String.IsNullOrEmpty(command))
                 ret.Add(command);
 
+            /*var k = string.Join(" , ", ret);
+
+            System.IO.File.AppendAllText("asd.txt", k + Environment.NewLine);*/
+            
+
             return ret.ToArray();
         }
     }
@@ -116,7 +122,7 @@ namespace Ultima.Spy.Packets
 
             if (command.StartsWith("kr_"))
                 command = command.Substring(3, command.Length - 3);
-
+            
             switch (command)
             {
                 case "nomove":
