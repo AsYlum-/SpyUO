@@ -12,140 +12,71 @@ namespace Ultima.Spy.Packets
 		SpecialEffect			= 0x4,
 	}
 
-	[UltimaPacket( "Graphical Effect", UltimaPacketDirection.FromClient, 0x70 )]
+	[UltimaPacket( "Graphical Effect", UltimaPacketDirection.FromBoth, 0x70 )]
 	public class GraphicalEffectPacket : UltimaPacket, IUltimaEntity
-	{
-		private GraphicalEffectType _Type;
-		
+	{		
 		[UltimaPacketProperty( "Type", "{0:D} - {0}" )]
-		public GraphicalEffectType Type
-		{
-			get { return _Type; }
-		}
-
-		private uint _Source;
-
+		public GraphicalEffectType Type { get; set; }
+       
 		[UltimaPacketProperty( "Source", "0x{0:X}" )]
-		public uint Source
-		{
-			get { return _Source; }
-		}
-
-		private uint _Target;
+		public uint Source { get; set; }
 
 		[UltimaPacketProperty( "Target", "0x{0:X}" )]
-		public uint Serial
-		{
-			get { return _Target; }
-		}
-
-		private int _ObjectID;
+		public uint Serial { get; set; }
 
 		[UltimaPacketProperty( "Object ID", "0x{0:X}" )]
-		public int ObjectID
-		{
-			get { return _ObjectID; }
-		}
-
-		private int _SourceX;
+		public int ObjectID { get; set; }
 
 		[UltimaPacketProperty( "Source X" )]
-		public int SourceX
-		{
-			get { return _SourceX; }
-		}
-
-		private int _SourceY;
+		public int SourceX { get; set; }
 
 		[UltimaPacketProperty( "Source X" )]
-		public int SourceY
-		{
-			get { return _SourceY; }
-		}
-
-		private int _SourceZ;
+		public int SourceY { get; set; }
 
 		[UltimaPacketProperty( "Source Z" )]
-		public int SourceZ
-		{
-			get { return _SourceZ; }
-		}
-
-		private int _TargetX;
+		public int SourceZ { get; set; }
 
 		[UltimaPacketProperty( "Target X" )]
-		public int TargetX
-		{
-			get { return _TargetX; }
-		}
-
-		private int _TargetY;
+		public int TargetX { get; set; }
 
 		[UltimaPacketProperty( "Target X" )]
-		public int TargetY
-		{
-			get { return _TargetY; }
-		}
-
-		private int _TargetZ;
+		public int TargetY { get; set; }
 
 		[UltimaPacketProperty( "Target Z" )]
-		public int TargetZ
-		{
-			get { return _TargetZ; }
-		}
-
-		private int _Speed;
+		public int TargetZ { get; set; }
 
 		[UltimaPacketProperty]
-		public int Speed
-		{
-			get { return _Speed; }
-		}
-
-		private int _Duration;
+		public int Speed { get; set; }
 
 		[UltimaPacketProperty( "Duration (s)" )]
-		public int Duration
-		{
-			get { return _Duration; }
-		}
-
-		private bool _FixedDirection;
+		public int Duration { get; set; }
 
 		[UltimaPacketProperty( "Fixed Direction" )]
-		public bool FixedDirection
-		{
-			get { return _FixedDirection; }
-		}
-
-		private bool _Explode;
+		public bool FixedDirection { get; set; }
 
 		[UltimaPacketProperty]
-		public bool Explode
-		{
-			get { return _Explode; }
-		}
+		public bool Explode { get; set; }
 
-		protected override void Parse( BigEndianReader reader )
+        protected override void Parse( BigEndianReader reader )
 		{
 			reader.ReadByte(); // ID
 
-			_Type = (GraphicalEffectType) reader.ReadByte();
-			_Source = reader.ReadUInt32();
-			_Target = reader.ReadUInt32();
-			_ObjectID = reader.ReadInt16();
-			_SourceX = reader.ReadInt16();
-			_SourceY = reader.ReadInt16();
-			_SourceZ = reader.ReadSByte();
-			_TargetX = reader.ReadInt16();
-			_TargetY = reader.ReadInt16();
-			_TargetZ = reader.ReadSByte();
-			_Speed = reader.ReadByte();
-			_Duration = reader.ReadByte();
+			Type = (GraphicalEffectType) reader.ReadByte();
+			Source = reader.ReadUInt32();
+			Serial = reader.ReadUInt32();
+			ObjectID = reader.ReadInt16();
+			SourceX = reader.ReadInt16();
+			SourceY = reader.ReadInt16();
+			SourceZ = reader.ReadSByte();
+			TargetX = reader.ReadInt16();
+			TargetY = reader.ReadInt16();
+			TargetZ = reader.ReadSByte();
+			Speed = reader.ReadByte();
+			Duration = reader.ReadByte();
 			reader.ReadInt16();
-			_FixedDirection = reader.ReadBoolean();
-			_Explode = reader.ReadBoolean();
+            reader.ReadInt16();
+            FixedDirection = reader.ReadBoolean();
+			Explode = reader.ReadBoolean();
 		}
 	}
 }

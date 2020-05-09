@@ -227,7 +227,16 @@ namespace Ultima.Spy
 				{
 					if ( _EventBuffer.dwDebugEventCode == NativeMethods.DebugEventCode.EXCEPTION_DEBUG_EVENT )
 					{
-						uint address = (uint) _EventBuffer.u.Exception.ExceptionRecord.ExceptionAddress.ToInt32();
+                        uint address;
+
+                        if ( SystemInfo.IsX64 )
+                        {
+                            address = (uint)_EventBuffer.u.Exception.ExceptionRecord.ExceptionAddress.ToInt64();
+                        }
+                        else
+                        {
+                            address = (uint)_EventBuffer.u.Exception.ExceptionRecord.ExceptionAddress.ToInt32();
+                        }
 
 						if ( _Breakpoints.ContainsKey( address ) )
 							Breakpoint( _EventBuffer.dwThreadId, address );

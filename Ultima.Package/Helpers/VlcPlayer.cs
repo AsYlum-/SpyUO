@@ -24,11 +24,11 @@ namespace Ultima.Package
 				string keyPath;
 
 				if ( SystemInfo.IsX64 )
-					keyPath = "SOFTWARE\\Wow6432Node\\VideoLAN\\VLC";
+                    keyPath = "SOFTWARE\\VideoLAN\\VLC";                
 				else
-					keyPath = "SOFTWARE\\VideoLAN\\VLC";
+                    keyPath = "SOFTWARE\\Wow6432Node\\VideoLAN\\VLC";
 
-				RegistryKey key = Registry.LocalMachine.OpenSubKey( keyPath );
+                RegistryKey key = Registry.LocalMachine.OpenSubKey( keyPath );
 
 				if ( key != null )
 				{
@@ -39,10 +39,10 @@ namespace Ultima.Package
 				if ( String.IsNullOrEmpty( folder ) )
 				{
 					if ( SystemInfo.IsX64 )
-						folder = @"C:\Program Files (x86)\VideoLAN\VLC\";
-					else
-						folder = @"C:\Program Files\VideoLAN\VLC\";
-				}
+                        folder = @"C:\Program Files\VideoLAN\VLC\";
+                    else						
+                        folder = @"C:\Program Files (x86)\VideoLAN\VLC\";
+                }
 
 				if ( Directory.Exists( folder ) )
 					return folder;
@@ -61,11 +61,11 @@ namespace Ultima.Package
 				string keyPath;
 
 				if ( SystemInfo.IsX64 )
-					keyPath = "SOFTWARE\\Wow6432Node\\VideoLAN\\VLC";
+                    keyPath = "SOFTWARE\\VideoLAN\\VLC";                
 				else
-					keyPath = "SOFTWARE\\VideoLAN\\VLC";
+                    keyPath = "SOFTWARE\\Wow6432Node\\VideoLAN\\VLC";
 
-				RegistryKey key = Registry.LocalMachine.OpenSubKey( keyPath );
+                RegistryKey key = Registry.LocalMachine.OpenSubKey( keyPath );
 
 				if ( key != null )
 				{
